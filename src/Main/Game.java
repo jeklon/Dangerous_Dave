@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 public class Game {
 
-	//Version1.1
+	//v 1.1
 	
 	public static void main(String[] args) {
 		

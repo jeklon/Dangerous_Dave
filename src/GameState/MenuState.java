@@ -79,7 +79,7 @@ public class MenuState extends GameState {
 	
 	private void select() {
 		if(currentChoice == 0) {
-			// start
+			gsm.setState(GameStateManager.LEVEL1STATE); // 1й пункт опций запускает 1й уровень игры
 		}
 		if(currentChoice == 1) {
 			// help
