@@ -8,8 +8,7 @@ import javax.swing.JPanel;
 
 import GameState.GameStateManager;
 
-public class GamePanel extends JPanel 
-	implements Runnable, KeyListener{
+public class GamePanel extends JPanel implements Runnable, KeyListener{
 	
 	// dimensions размеры
 	public static final int WIDTH = 320;

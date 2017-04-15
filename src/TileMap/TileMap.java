@@ -174,4 +174,7 @@ public void draw(Graphics2D g){
     
 }
 
+    public int getNumRows() { return numRows; }
+    public int getNumCols() { return numCols; }
+
 }
