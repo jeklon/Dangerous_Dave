@@ -1,5 +1,6 @@
 package TileMap;
 
+import Main.Game;
 import Main.GamePanel;
 
 import java.awt.*;
@@ -89,6 +90,11 @@ public void loadMap(String s){
         map = new int[numRows][numCols];
         width = numCols * tileSize;
         height = numRows * tileSize;
+
+        xmin = GamePanel.WIDTH - width;
+        xmax = 0;
+        ymin = GamePanel.HEIGHT - height;
+        ymax = 0;
 
         String delims = "\\s+"; //разделитель
         for (int row = 0; row < numRows; row++) {
