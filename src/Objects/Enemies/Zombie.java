@@ -16,8 +16,8 @@ public class Zombie extends Enemy {
 
         super(tm);
 
-        moveSpeed = 0.3;
-        maxSpeed = 0.3;
+        moveSpeed = 0.6;
+        maxSpeed = 0.6;
         fallSpeed = 0.2;
         maxFallSpeed = 10.0;
 

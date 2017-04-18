@@ -10,9 +10,9 @@ public class Animation { // класс обработки анимации
     private int numFrames;
 
     private long startTime; // время между кадрами
-    private long delay;
+    private long delay; // задержка
 
-    private boolean playedOnce; //есть или нет анимации, была ли проиграна анимация
+    private boolean playedOnce; // воспроизведена ли анимация 1 раз
 
 //конструктор
     public Animation(){

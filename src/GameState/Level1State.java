@@ -62,10 +62,23 @@ public class Level1State extends GameState {
 
         Zombie s;
         Point[] points = new Point[] {
+                new Point(40, 200),
                 new Point(200, 100),
-                new Point(860, 200),
+                new Point(300, 100),
+                new Point(350, 100),
+                new Point(310, 100),
+                new Point(850, 200),
                 new Point(1525, 200),
+                new Point(3680, 200),
+                new Point(2000, 200),
+                new Point(3000, 200),
+                new Point(2700, 200),
+                new Point(2750, 200),
+                new Point(2900, 200),
+                new Point(2850, 200),
                 new Point(1680, 200),
+                new Point(2500, 200),
+                new Point(2800, 200),
                 new Point(1800, 200)
         };
         for(int i = 0; i < points.length; i++) {
@@ -78,6 +91,13 @@ public class Level1State extends GameState {
 
     @Override
     public void update() {
+
+        // если игрок умер
+        if(player.getHealth() == 0 || player.gety() > tileMap.getHeight()){ //|| player.gety() > tileMap.getHeight()) {
+            //gsm.setState(GameStateManager.LEVEL1STATE);
+            gsm.setState(GameStateManager.MENUSTATE);
+            //System.exit(1);
+        }
 
         // обновление player
         player.update();
@@ -109,8 +129,6 @@ public class Level1State extends GameState {
             }
         }
         }
-
-
 
     @Override
     public void draw(Graphics2D g) {

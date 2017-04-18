@@ -1,10 +1,16 @@
 package Objects;
 
+import GameState.*;
+import GameState.GameStateManager;
+import GameState.MenuState;
+import Main.Game;
+import Main.GamePanel;
 import TileMap.Tile;
 import TileMap.TileMap;
 import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -29,7 +35,7 @@ public class Player extends MapObject {
     private ArrayList<BufferedImage[]> sprites;
 
     //хранение количества кадров анимации под определенное действие
-    private final int[] numFrames = {1, 4, 3, 1, 2};
+    private final int[] numFrames = {1, 4, 3, 1, 2, 2};
 
     //анимация действий
     private static final int IDLE = 0;
@@ -37,6 +43,7 @@ public class Player extends MapObject {
     private static final int JUMPING = 2;
     private static final int FALLING = 3;
     private static final int BULLET = 4;
+    private static final int RECHARGE = 5;
 
     //конструктор
     public Player(TileMap tm){
@@ -74,7 +81,7 @@ public class Player extends MapObject {
             sprites = new ArrayList<BufferedImage[]>();
 
             //проход по действиям персонажа
-            for (int i = 0; i < 5 ; i++) {
+            for (int i = 0; i < 6 ; i++) {
 
                 BufferedImage[] bi = new BufferedImage[numFrames[i]];
                 //проход по кадрам действия
@@ -169,7 +176,7 @@ public class Player extends MapObject {
             }
         }
 
-        //атака при движении невозможна кроме пржка:
+        //атака при движении невозможна кроме прыжка:
         if((currentAction == BULLET) && !(jumping || falling)){
             dx = 0;
         }
@@ -195,6 +202,12 @@ public class Player extends MapObject {
 
     //основная функция позиционирования
     public void update(){
+
+       // if(getHealth() == 0){
+
+            //System.exit(1);
+
+        //}
 
         //обновление позиции
         getNextPosition();
@@ -228,7 +241,7 @@ public class Player extends MapObject {
             }
         }
 
-// проверка на заканчивание мигания игрока
+        // проверка на заканчивание мигания игрока
         if(flinching) {
             long elapsed =
                     (System.nanoTime() - flinchTimer) / 1000000;
@@ -236,14 +249,22 @@ public class Player extends MapObject {
                 flinching = false;
             }
         }
+        //перезарядка только когда player стоит на месте и не стреляет
+        if(getFire()<getMaxFire() && dx==0 && currentAction!=BULLET){
+            currentAction = RECHARGE;
+            animation.setFrames(sprites.get(RECHARGE));
+            animation.setDelay(150);
+            width = 30;
+
+        }
 
         //проверка набора анимаций
-        if(firing){
+        if(firing && dx==0){
 
             if(currentAction != BULLET){
                 currentAction = BULLET;
                 animation.setFrames(sprites.get(BULLET));
-                animation.setDelay(100);
+                animation.setDelay(150);
                 width = 30;
             }}else if(dy > 0) {if(currentAction != FALLING){
 
@@ -296,10 +317,18 @@ public class Player extends MapObject {
 
             setMapPosition();
 
+            if(getFire()<getMaxFire() && dx==0 && currentAction!=BULLET){
+                currentAction = RECHARGE;
+                animation.setFrames(sprites.get(RECHARGE));
+                animation.setDelay(150);
+                width = 30;
+            }
+
             //отрисовка пули
+            if(dx==0){
             for(int i = 0; i < bullets.size(); i++) {
                 bullets.get(i).draw(g);
-            }
+            }}
 
             //отрисовка player
             if(flinching){
@@ -317,6 +346,7 @@ public class Player extends MapObject {
             super.draw(g);
 
         }
+
 
     }
 

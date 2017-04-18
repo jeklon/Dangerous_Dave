@@ -30,8 +30,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	
 	public GamePanel() {
 		super();
-		setPreferredSize(
-			new Dimension(WIDTH * SCALE, HEIGHT * SCALE)); //расширение размеров игры х2
+		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE)); //расширение размеров игры х2
 		setFocusable(true);
 		requestFocus();
 	}
@@ -47,10 +46,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	
 	private void init() {
 		
-		image = new BufferedImage(
-					WIDTH, HEIGHT,
-					BufferedImage.TYPE_INT_RGB
-				);
+		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = (Graphics2D) image.getGraphics();
 		
 		running = true;
@@ -107,8 +103,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	}
 	
 	public void keyTyped(KeyEvent key) {}
-	public void keyPressed(KeyEvent key) {
-		gsm.keyPressed(key.getKeyCode());
+	public void keyPressed(KeyEvent key) {gsm.keyPressed(key.getKeyCode());
 	}
 	public void keyReleased(KeyEvent key) {
 		gsm.keyReleased(key.getKeyCode());

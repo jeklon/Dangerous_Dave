@@ -1,47 +1,80 @@
 package GameState;
 
+import Main.GamePanel;
+
 import java.util.ArrayList;
 
 //Менеджер игровых состояний
 
 public class GameStateManager {
 	
-	private ArrayList<GameState> gameStates; // список, в котором содержаться игровые состояния
+	private GameState[] gameStates; // список, в котором содержаться игровые состояния
 	private int currentState; //текущее состояние
-	
+
+	public static final int NUMSTATES = 2;
 	public static final int MENUSTATE = 0; // 1е состояние меню
 	public static final int LEVEL1STATE = 1; // 2е состояние меню
 	
 	public GameStateManager() { //конструктор
 		
-		gameStates = new ArrayList<GameState>(); // инициализация списка
+		gameStates = new GameState[NUMSTATES]; // инициализация списка
 		
 		currentState = MENUSTATE;
-		gameStates.add(new MenuState(this));
-		gameStates.add(new Level1State(this)); //состояние перехода на 1й уровень игры
+		loadState(currentState);
 		
+	}
+	private void loadState(int state) {
+		if(state == MENUSTATE)
+			gameStates[state] = new MenuState(this);
+		if(state == LEVEL1STATE)
+			gameStates[state] = new Level1State(this);
+	}
+
+	private void unloadState(int state) {
+		gameStates[state] = null;
 	}
 	
 	public void setState(int state) { //метод изменения состояний
+		unloadState(currentState);
 		currentState = state;
-		gameStates.get(currentState).init(); // инициализация текущего состояния
+		loadState(currentState);
+		//gameStates[currentState].init(); // инициализация текущего состояния
 	}
 	
 	public void update() { //метод обновления состояния
+	//try{
+		//gameStates[currentState].update();
+	//}
+	//catch (Exception e){
+		//e.printStackTrace();
+//}
 
-		gameStates.get(currentState).update();
+		if(gameStates[currentState] != null) gameStates[currentState].update();
 	}
 	
 	public void draw(java.awt.Graphics2D g) {
-		gameStates.get(currentState).draw(g);
+		//try{
+		//gameStates[currentState].draw(g);
+	//}
+		//catch (Exception e){
+			//e.printStackTrace();
+		//}
+
+		if(gameStates[currentState] != null) gameStates[currentState].draw(g);
+		else {
+			g.setColor(java.awt.Color.BLACK);
+			g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
+		}
+
 	}
 	
 	public void keyPressed(int k) {
-		gameStates.get(currentState).keyPressed(k);
+	gameStates[currentState].keyPressed(k);
+
 	}
 	
 	public void keyReleased(int k) {
-		gameStates.get(currentState).keyReleased(k);
+		gameStates[currentState].keyReleased(k);
 	}
 	
 }

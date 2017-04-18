@@ -49,10 +49,11 @@ public class Background {
 		this.y = (y * moveScale) % GamePanel.HEIGHT;
 	}
 
-	public void setVector(double dx, double dy) {
+	/*public void setVector(double dx, double dy) {
 		this.dx = dx;
 		this.dy = dy;
-	}
+	}*/
+
 	public void update() {
 		x += dx;
 		y += dy;
