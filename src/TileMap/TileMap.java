@@ -116,12 +116,12 @@ public int getTileSize(){
     return tileSize;
 }
 
-public int getx(){
-    return (int) x;
+public double getx(){
+    return x;
 }
 
-public int gety(){
-    return (int) y;
+public double gety(){
+    return y;
 }
 
 public  int getWidth(){
@@ -138,6 +138,8 @@ public int getType(int row, int col){
     int c =  rc % numTilesAcross;
     return tiles[r][c].getType();
 }
+
+public void setTween(double d) { tween = d; }
 
 public void setPosition(double x, double y){
 

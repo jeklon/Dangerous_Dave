@@ -23,7 +23,7 @@ public class Player extends MapObject {
     private boolean firing;
     private int fireCost;
     private int fireDamage;
-    //private ArrayList<Bullet> bullets;
+    private ArrayList<Bullet> bullets;
 
     //анимация
     private ArrayList<BufferedImage[]> sprites;
@@ -59,11 +59,11 @@ public class Player extends MapObject {
         facingRight = true;
 
         health = maxHealth = 2;
-        fire = maxFire = 2500;
+        fire = maxFire = 500;
 
-        fireCost = 200;
+        fireCost = 100;
         fireDamage = 5;
-        //bullets = new ArrayList<Bullet>();
+        bullets = new ArrayList<Bullet>();
 
         //загрузка спрайтов
         try{
@@ -80,26 +80,7 @@ public class Player extends MapObject {
                 //проход по кадрам действия
                 for (int j = 0; j < numFrames[i] ; j++) {
 
-                    //если размер отличается от 30 на 30 то if(i !=4) и потом в else меняешь щирину и длину
-
                     bi[j] = spritesheet.getSubimage(j*width, i*height, width, height);
-
-                    /*if(i != 4) {
-                        bi[j] = spritesheet.getSubimage(
-                                j * width,
-                                i * height,
-                                width,
-                                height
-                        );
-                    }
-                    else {
-                        bi[j] = spritesheet.getSubimage(
-                                j * width * 2,
-                                i * height,
-                                width,
-                                height
-                        );
-                    }*/
 
                 }
                 sprites.add(bi);
@@ -125,6 +106,41 @@ public class Player extends MapObject {
     public void setFiring(){
         firing=true;
     }
+
+    public void checkAttack(ArrayList<Enemy> enemies) {
+
+        // цикл прохода по врагам
+        for(int i = 0; i < enemies.size(); i++) {
+
+            Enemy e = enemies.get(i);
+
+            // выстрел
+            for(int j = 0; j < bullets.size(); j++) {
+                if(bullets.get(j).intersects(e)) {
+                    e.hit(fireDamage);
+                    bullets.get(j).setHit();
+                    break;
+                }
+            }
+
+            // проверка на столкновение с врагом
+            if(intersects(e)) {
+                hit(e.getDamage());
+            }
+
+        }
+
+    }
+
+    public void hit(int damage) {
+        if(flinching) return;
+        health -= damage;
+        if(health < 0) health = 0;
+        if(health == 0) dead = true;
+        flinching = true;
+        flinchTimer = System.nanoTime();
+    }
+
 
     private void getNextPosition(){ //определяет следующую позицию после нажатия на клавишу
         //движение
@@ -153,7 +169,7 @@ public class Player extends MapObject {
             }
         }
 
-        //атака при движении невозможна:
+        //атака при движении невозможна кроме пржка:
         if((currentAction == BULLET) && !(jumping || falling)){
             dx = 0;
         }
@@ -184,6 +200,42 @@ public class Player extends MapObject {
         getNextPosition();
         checkTileMapCollision();
         setPosition(xtemp, ytemp);
+
+        //проверка на остановку выстрела
+        if(currentAction == BULLET) {
+            if(animation.hasPlayedOnce()) firing = false;
+        }
+
+        //пуля
+        if(dx ==0){
+        fire += 1;
+        if(fire > maxFire) fire = maxFire;
+        if(firing && currentAction != BULLET) {
+            if(fire > fireCost) {
+                fire -= fireCost;
+                Bullet fb = new Bullet(tileMap, facingRight);
+                fb.setPosition(x, y);
+                bullets.add(fb);
+            }
+        }}
+
+        //обновление половжения пули
+        for(int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).update();
+            if(bullets.get(i).shouldRemove()) {
+                bullets.remove(i);
+                i--;
+            }
+        }
+
+// проверка на заканчивание мигания игрока
+        if(flinching) {
+            long elapsed =
+                    (System.nanoTime() - flinchTimer) / 1000000;
+            if(elapsed > 1000) {
+                flinching = false;
+            }
+        }
 
         //проверка набора анимаций
         if(firing){
@@ -244,6 +296,11 @@ public class Player extends MapObject {
 
             setMapPosition();
 
+            //отрисовка пули
+            for(int i = 0; i < bullets.size(); i++) {
+                bullets.get(i).draw(g);
+            }
+
             //отрисовка player
             if(flinching){
                 long elapsed = (System.nanoTime() - flinchTimer)/1000000;
@@ -256,6 +313,8 @@ public class Player extends MapObject {
             }else {
                 g.drawImage(animation.getImage(), (int)(x+xmap-width/2 +width), (int)(y+ymap-height/2), -width, height, null);
             }
+
+            super.draw(g);
 
         }
 

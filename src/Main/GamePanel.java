@@ -15,7 +15,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	public static final int HEIGHT = 240;
 	public static final int SCALE = 2; //масштабирование размеров окна х2
 	
-	// game thread
+	// игровой поток
 	private Thread thread;
 	private boolean running;
 	private int FPS = 60;
@@ -101,7 +101,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	private void drawToScreen() {
 		Graphics g2 = getGraphics();
 		g2.drawImage(image, 0, 0,
-				WIDTH * SCALE, HEIGHT * SCALE,   // растяшивает картинку на ширину окна
+				WIDTH * SCALE, HEIGHT * SCALE,   // растягивает картинку на ширину окна
 				null);
 		g2.dispose();
 	}

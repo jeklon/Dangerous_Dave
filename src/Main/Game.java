@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 public class Game {
 
-	//v 1.3
+	//v 1.4
 	
 	public static void main(String[] args) {
 		

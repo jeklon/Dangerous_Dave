@@ -15,7 +15,7 @@ public class Animation { // класс обработки анимации
     private boolean playedOnce; //есть или нет анимации, была ли проиграна анимация
 
 //конструктор
-    public void Animation(){
+    public Animation(){
         playedOnce = false;
     }
 
