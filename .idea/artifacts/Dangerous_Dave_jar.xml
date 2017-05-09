@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Dangerous_Dave:jar">
+    <output-path>$USER_HOME$/Desktop/ДЖААР</output-path>
+    <root id="archive" name="Dangerous_Dave.jar">
+      <element id="module-output" name="Dangerous_Dave" />
+    </root>
+  </artifact>
+</component>
